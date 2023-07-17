@@ -1,8 +1,9 @@
-import os
-import lxml.etree
-import zipfile
-import sqlfluff
 import logging
+import os
+import zipfile
+
+import lxml.etree
+import sqlfluff
 
 from recursive_search import RecursiveSearch
 
@@ -31,7 +32,6 @@ class TableauWorkbook:
             return self.filename + " is not a valid .twb or .twbx file."
 
         else:
-
             # unzip packaged workbooks to obtain xml
             if twb[-1] == "twb":
                 xml = lxml.etree.parse(self.filename).getroot()
@@ -51,13 +51,21 @@ class TableauWorkbook:
         """
 
         search = self.xml.xpath("//relation[@type='text']")
-        queries = list(set([sql.text.lower().replace("<<", "<").replace(">>", ">") for sql in search]))
+        queries = list(
+            set(
+                [
+                    sql.text.lower().replace("<<", "<").replace(">>", ">")
+                    for sql in search
+                ]
+            )
+        )
 
         return queries
 
     def _parse_custom_sql(self):
         """
-        Returns a list of all unique custom sql queries in the workbook parsed by sqlfluff parser
+        Returns a list of all unique custom sql queries
+        in the workbook parsed by sqlfluff parser
         """
         parsed_queries = []
         for sql_request in self.custom_sql:

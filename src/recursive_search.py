@@ -7,11 +7,11 @@ class RecursiveSearch:
         self.index = 0
 
     @staticmethod
-    def _get_dict_values(element: dict) -> str:
-        return str(" ".join([el.strip() for el in element if el != " "]))
+    def _get_dict_values(element: list[str]) -> str:
+        return str(" ".join([el.strip() for el in element if el not in (" ", "")]))
 
     @staticmethod
-    def _extract_elements(element: Union[list, str]):
+    def _extract_elements(element: Union[dict, list]) -> str:
         extraction = ""
         if isinstance(element, dict):
             values_list = list(element.values())
@@ -20,7 +20,9 @@ class RecursiveSearch:
         if isinstance(element, list):
             extraction = ""
             for i in range(0, len(element)):
-                extraction += RecursiveSearch._get_dict_values(element=element[i].values())
+                extraction += RecursiveSearch._get_dict_values(
+                    element=element[i].values()
+                )
             return extraction
         return
 
@@ -37,7 +39,9 @@ class RecursiveSearch:
                 table_reference = RecursiveSearch._extract_elements(
                     values.get("table_expression").get("table_reference")
                 )
-                table_alias = RecursiveSearch._extract_elements(values.get("alias_expression"))
+                table_alias = RecursiveSearch._extract_elements(
+                    values.get("alias_expression")
+                )
                 self.stock[self.index] = [f"{table_reference} {table_alias}", "table"]
             if key == "column_reference":
                 table_column = RecursiveSearch._extract_elements(element=values)

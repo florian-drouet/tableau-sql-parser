@@ -1,10 +1,9 @@
-from tableau_workbook import TableauWorkbook
 import argparse
+
+from tableau_workbook import TableauWorkbook
 from utils import is_valid_file
 
-
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(description="tableau-sql-parser cli arguments")
 
     parser.add_argument(
