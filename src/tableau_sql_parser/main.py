@@ -15,7 +15,16 @@ if __name__ == "__main__":
         type=lambda x: is_valid_file(parser, x),
     )
 
+    parser.add_argument(
+        "-r",
+        dest="report_name",
+        required=True,
+        help="input report name",
+        type=str,
+    )
+
     args = parser.parse_args()
-    print(args.filename)
-    my_workbook = TableauWorkbook(args.filename.name)
-    print(my_workbook.recursive_searched_queries[0])
+    my_workbook = TableauWorkbook(
+        filename=args.filename.name, report_name=args.report_name
+    )
+    my_workbook._generate_output()

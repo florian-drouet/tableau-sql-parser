@@ -4,7 +4,7 @@ import zipfile
 
 import lxml.etree
 import sqlfluff
-
+from output_formatting import OutputFormatting
 from recursive_search import RecursiveSearch
 
 
@@ -13,8 +13,9 @@ class TableauWorkbook:
     Defines a workbook object from a filename.
     """
 
-    def __init__(self, filename):
+    def __init__(self, filename, report_name):
         self.filename = os.path.normpath(filename)
+        self.report_name = report_name
         self.xml = self._get_xml()
         self.custom_sql = self._get_custom_sql()
         self.custom_sql_parsed = self._parse_custom_sql()
@@ -85,3 +86,9 @@ class TableauWorkbook:
             search.recursive_depth(file_to_parse=self.custom_sql_parsed[i])
             recursive_searched_queries.append(search.stock)
         return recursive_searched_queries
+
+    def _generate_output(self):
+        report = OutputFormatting(
+            outputs=self.recursive_searched_queries, report_name=self.report_name
+        )
+        report.format_output()

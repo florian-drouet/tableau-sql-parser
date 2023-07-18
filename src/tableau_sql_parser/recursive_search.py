@@ -7,21 +7,20 @@ class RecursiveSearch:
         self.index = 0
 
     @staticmethod
-    def _get_dict_values(element: list[str]) -> str:
-        return str(" ".join([el.strip() for el in element if el not in (" ", "")]))
+    def _flatten_values(values: list[str]) -> str:
+        return str(" ".join([v.strip() for v in values if v not in (" ", "")]))
 
     @staticmethod
     def _extract_elements(element: Union[dict, list]) -> str:
         extraction = ""
         if isinstance(element, dict):
             values_list = list(element.values())
-            extraction = RecursiveSearch._get_dict_values(element=values_list)
+            extraction = RecursiveSearch._flatten_values(values=values_list)
             return extraction
         if isinstance(element, list):
-            extraction = ""
             for i in range(0, len(element)):
-                extraction += RecursiveSearch._get_dict_values(
-                    element=element[i].values()
+                extraction += RecursiveSearch._flatten_values(
+                    values=element[i].values()
                 )
             return extraction
         return

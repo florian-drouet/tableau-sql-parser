@@ -11,8 +11,8 @@ import sqlfluff
         (["  foo", "bar  ", "1"], "foo bar 1")
     ],
 )
-def test__get_dict_values(test_input, expected):
-    assert RecursiveSearch._get_dict_values(test_input) == expected
+def test__flatten_values(test_input, expected):
+    assert RecursiveSearch._flatten_values(test_input) == expected
 
 
 @pytest.mark.parametrize(
