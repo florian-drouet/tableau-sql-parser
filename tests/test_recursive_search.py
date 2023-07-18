@@ -1,4 +1,4 @@
-from src.recursive_search import RecursiveSearch
+from src.tableau_sql_parser.recursive_search import RecursiveSearch
 import pytest
 import sqlfluff
 
