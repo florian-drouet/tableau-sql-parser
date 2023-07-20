@@ -4,8 +4,8 @@ import zipfile
 
 import lxml.etree
 import sqlfluff
-from output_formatting import OutputFormatting
-from recursive_search import RecursiveSearch
+from tableau_sql_parser.output_formatting import OutputFormatting
+from tableau_sql_parser.recursive_search import RecursiveSearch
 
 
 class TableauWorkbook:
