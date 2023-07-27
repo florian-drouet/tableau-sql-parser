@@ -19,6 +19,7 @@ sqlfluff = "2.1"
 black = "23.7"
 flake8 = "6.0"
 isort = "5.12"
+pytest = "7.4"
 
 [build-system]
 requires = ["poetry-core"]

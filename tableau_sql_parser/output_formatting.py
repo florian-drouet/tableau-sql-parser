@@ -1,33 +1,33 @@
 class OutputFormatting:
-    def __init__(self, outputs: list, report_name: str):
-        self.outputs = outputs
+    def __init__(self, report_name: str, alias: dict, columns: dict):
         self.report_name = report_name
-        self.number_queries = len(self.outputs)
-        self.number_tables = 0
-        self.tables = []
-        self.get_insights()
+        self.tables_names = []
+        self.column_names = []
+        self.alias = alias
+        self.columns = columns
+        self.get_column_names_all()
+        self.get_tables_names()
 
-    def get_insights(self):
-        tables = []
-        for output in self.outputs:
-            for values in output.values():
-                if values[1] == "table":
-                    tables.append(values[0])
-        self.tables = [*set(tables)]
-        self.number_tables = len(self.tables)
+    @staticmethod
+    def get_column_names(alias: dict, columns: dict) -> list:
+        column_names_full = []
+        for value in columns.values():
+            split = value.split(".", 1)
+            potential_alias = split[0]
+            if potential_alias in alias.keys():
+                column_names_full.append(f"{alias[potential_alias]}.{split[1]}")
+            else:
+                column_names_full.append(potential_alias)
+        return column_names_full
+            
+    def get_column_names_all(self):
+        temp_column_names = []
+        for i in range(0, len(self.alias)):
+            temp_column_names.extend(self.get_column_names(alias=self.alias[i], columns=self.columns[i]))
+        self.column_names = sorted([*set(temp_column_names)])
 
-    def format_output(self):
-        # fmt: off
-        with open(f"{self.report_name}.md", "bw") as f:
-            f.write((f"# Tableau SQL report | {self.report_name}  \n").encode("utf-8"))
-            f.write((f"{self.number_queries} queries have been analyzed.  \n\n").encode("utf-8"))
-            f.write((f"{self.number_tables} tables used: {self.tables}  \n\n").encode("utf-8"))
-            for index, output in enumerate(self.outputs, start=1):
-                f.write((f"\nQuery number {index}:\n").encode("utf-8"))
-                f.write(("| index | input | type |\n|---:|:---|:---|\n").encode("utf-8"))
-                for index, lines in output.items():
-                    f.write((f"| {index} |").encode("utf-8"))
-                    for element in lines:
-                        f.write((f" {element} |").encode("utf-8"))
-                    f.write(("\n").encode("utf-8"))
-        # fmt: on
+    def get_tables_names(self):
+        temp_table_names = []
+        for column in self.column_names:
+            temp_table_names.append(".".join(column[::-1].split(".", 1)[1:])[::-1])
+        self.tables_names = sorted([*set(temp_table_names)])

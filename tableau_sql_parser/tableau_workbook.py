@@ -19,7 +19,7 @@ class TableauWorkbook:
         self.xml = self._get_xml()
         self.custom_sql = self._get_custom_sql()
         self.custom_sql_parsed = self._parse_custom_sql()
-        self.recursive_searched_queries = self._recursive_search_sql()
+        self.recursive_searched_queries, self.columns, self.alias = self._recursive_search_sql()
 
     def _get_xml(self):
         """
@@ -81,14 +81,21 @@ class TableauWorkbook:
         Returns a dict where keys are index and values are a list of column/table names
         """
         recursive_searched_queries = []
+        columns = []
+        alias = []
         for i in range(0, len(self.custom_sql_parsed)):
             search = RecursiveSearch()
             search.recursive_depth(file_to_parse=self.custom_sql_parsed[i])
             recursive_searched_queries.append(search.stock)
-        return recursive_searched_queries
-
+            columns.append(search.columns)
+            alias.append(search.alias)
+        return recursive_searched_queries, columns, alias
+    
     def _generate_output(self):
+        number_queries_analyzed = len(self.recursive_searched_queries)
         report = OutputFormatting(
-            outputs=self.recursive_searched_queries, report_name=self.report_name
+            report_name=self.report_name,
+            alias=self.alias,
+            columns=self.columns,
         )
-        report.format_output()
+        return report.tables_names, report.column_names, number_queries_analyzed
