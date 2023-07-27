@@ -4,6 +4,7 @@ import zipfile
 
 import lxml.etree
 import sqlfluff
+
 from tableau_sql_parser.output_formatting import OutputFormatting
 from tableau_sql_parser.recursive_search import RecursiveSearch
 
@@ -19,7 +20,11 @@ class TableauWorkbook:
         self.xml = self._get_xml()
         self.custom_sql = self._get_custom_sql()
         self.custom_sql_parsed = self._parse_custom_sql()
-        self.recursive_searched_queries, self.columns, self.alias = self._recursive_search_sql()
+        (
+            self.recursive_searched_queries,
+            self.columns,
+            self.alias,
+        ) = self._recursive_search_sql()
 
     def _get_xml(self):
         """
@@ -90,7 +95,7 @@ class TableauWorkbook:
             columns.append(search.columns)
             alias.append(search.alias)
         return recursive_searched_queries, columns, alias
-    
+
     def _generate_output(self):
         number_queries_analyzed = len(self.recursive_searched_queries)
         report = OutputFormatting(

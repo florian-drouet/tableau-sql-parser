@@ -1,6 +1,7 @@
-from tableau_sql_parser.recursive_search import RecursiveSearch
 import pytest
 import sqlfluff
+
+from tableau_sql_parser.recursive_search import RecursiveSearch
 
 
 @pytest.mark.parametrize(
@@ -8,7 +9,7 @@ import sqlfluff
     [
         (["1", "2", "foo"], "1 2 foo"),
         (["1", "2", "   foo  ", "", " "], "1 2 foo"),
-        (["  foo", "bar  ", "1"], "foo bar 1")
+        (["  foo", "bar  ", "1"], "foo bar 1"),
     ],
 )
 def test__flatten_values(test_input, expected):
@@ -18,13 +19,14 @@ def test__flatten_values(test_input, expected):
 @pytest.mark.parametrize(
     "test_input,expected",
     [
-        ([{'foo': '1'}, {'bar': '2'}, {'test': '3'}], "123"),
-        ([{'foo': '1 '}, {'bar': ' 2'}, {'test': ' 3 '}], "123"),
-        ({'foo': 'bar'}, "bar")
+        ([{"foo": "1"}, {"bar": "2"}, {"test": "3"}], "123"),
+        ([{"foo": "1 "}, {"bar": " 2"}, {"test": " 3 "}], "123"),
+        ({"foo": "bar"}, "bar"),
     ],
 )
 def test__extract_elements(test_input, expected):
     assert RecursiveSearch._extract_elements(test_input) == expected
+
 
 sql_query = """
 WITH cte AS (
@@ -45,17 +47,18 @@ FROM
 """
 parsed_query = sqlfluff.parse(sql=sql_query.lower())
 expected_output = {
-    40: ['t.foo', 'column'],
-    55: ['t.test', 'column'],
-    69: ['schema.table as t', 'table'],
-    102: ['c.foo', 'column'],
-    117: ['c.test', 'column'],
-    132: ['tt.bar', 'column'],
-    145: ['cte as c', 'table'],
-    166: ['schema.table2 as tt', 'table'],
-    188: ['c.foo', 'column'],
-    203: ['tt.foo', 'column'],
- }
+    40: ["t.foo", "column"],
+    55: ["t.test", "column"],
+    69: ["schema.table as t", "table"],
+    102: ["c.foo", "column"],
+    117: ["c.test", "column"],
+    132: ["tt.bar", "column"],
+    145: ["cte as c", "table"],
+    166: ["schema.table2 as tt", "table"],
+    188: ["c.foo", "column"],
+    203: ["tt.foo", "column"],
+}
+
 
 def test__recursive_search():
     search_sql = RecursiveSearch()

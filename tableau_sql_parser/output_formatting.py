@@ -19,11 +19,13 @@ class OutputFormatting:
             else:
                 column_names_full.append(potential_alias)
         return column_names_full
-            
+
     def get_column_names_all(self):
         temp_column_names = []
         for i in range(0, len(self.alias)):
-            temp_column_names.extend(self.get_column_names(alias=self.alias[i], columns=self.columns[i]))
+            temp_column_names.extend(
+                self.get_column_names(alias=self.alias[i], columns=self.columns[i])
+            )
         self.column_names = sorted([*set(temp_column_names)])
 
     def get_tables_names(self):

@@ -21,10 +21,12 @@ class RecursiveSearch:
             return extraction
         if isinstance(element, list):
             for i in range(0, len(element)):
-                extraction += RecursiveSearch._flatten_values(values=element[i].values())
+                extraction += RecursiveSearch._flatten_values(
+                    values=element[i].values()
+                )
             return extraction
         return
-    
+
     @staticmethod
     def get_full_name_columns(alias: dict, columns: dict) -> list:
         full_names_columns = []
@@ -47,11 +49,18 @@ class RecursiveSearch:
         for key, values in file_to_parse.items():
             self.index += 1
             if key == "from_expression_element":
-                table_reference = RecursiveSearch._extract_elements(values.get("table_expression").get("table_reference"))
-                table_alias = RecursiveSearch._extract_elements(values.get("alias_expression"))
+                table_reference = RecursiveSearch._extract_elements(
+                    values.get("table_expression").get("table_reference")
+                )
+                table_alias = RecursiveSearch._extract_elements(
+                    values.get("alias_expression")
+                )
                 if table_alias:
                     table_alias = table_alias.replace("as ", "")
-                self.stock[self.index] = [f"{table_reference} as {table_alias}", "table"]
+                self.stock[self.index] = [
+                    f"{table_reference} as {table_alias}",
+                    "table",
+                ]
                 self.alias[f"{table_alias}"] = f"{table_reference}"
             if key == "column_reference":
                 table_column = RecursiveSearch._extract_elements(element=values)

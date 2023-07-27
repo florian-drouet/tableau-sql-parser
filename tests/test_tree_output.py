@@ -20,5 +20,6 @@ h
 |--|--j
 """
 
+
 def test__flatten_values():
-    assert tree_output(test_input)==expected
+    assert tree_output(test_input) == expected
