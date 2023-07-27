@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tableau-sql-parser"
-version = "0.1.0"
+version = "0.1.1"
 description = "A tool for parsing Tableau custom SQL queries and extracting useful information"
 authors = ["florian-drouet <50357200+florian-drouet@users.noreply.github.com>"]
 license = "LICENSE"
