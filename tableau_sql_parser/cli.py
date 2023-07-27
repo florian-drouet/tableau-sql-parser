@@ -1,5 +1,5 @@
 import click
-from utils import generate_report
+from tableau_sql_parser.utils import generate_report
 
 from tableau_sql_parser.tableau_workbook import TableauWorkbook
 

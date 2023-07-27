@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "tableau_sql_parser"}]
 
 [tool.poetry.scripts]
-tabparse = "tableau_sql_parser.cli:main"
+sqlparse = "tableau_sql_parser.cli:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"
