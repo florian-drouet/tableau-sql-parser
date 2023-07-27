@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "tableau-sql-parser"
+version = "0.1.0"
+description = "A tool for parsing Tableau custom SQL queries and extracting useful information"
+authors = ["florian-drouet <50357200+florian-drouet@users.noreply.github.com>"]
+license = "LICENSE"
+readme = "README.md"
+packages = [{include = "tableau_sql_parser"}]
+
+[tool.poetry.scripts]
+sqlparse = "tableau_sql_parser.cli:main"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+lxml = "4.9"
+sqlfluff = "2.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "23.7"
+flake8 = "6.0"
+isort = "5.12"
+pytest = "7.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
