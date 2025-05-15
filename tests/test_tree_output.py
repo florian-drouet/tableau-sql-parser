@@ -21,5 +21,5 @@ h
 """
 
 
-def test__flatten_values():
+def test__flatten_values() -> None:
     assert tree_output(test_input) == expected

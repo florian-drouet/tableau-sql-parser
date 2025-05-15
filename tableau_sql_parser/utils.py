@@ -1,13 +1,4 @@
-import os
-
 import click
-
-
-def is_valid_file(parser, arg):
-    if not os.path.exists(arg):
-        parser.error("The file %s does not exist!" % arg)
-    else:
-        return open(arg, "r")  # return an open file handle
 
 
 def tree_output(column_names: list) -> str:
@@ -26,11 +17,11 @@ def tree_output(column_names: list) -> str:
 
         max_length = max(len(current_line), len(next_line))
 
-        for i in range(0, max_length - 1):
+        for ii in range(0, max_length - 1):
             if (
-                current_line[i : i + 1] == next_line[i : i + 1]
-                and len(current_line[i : i + 1]) > 0
-                and len(next_line[i : i + 1]) > 0
+                current_line[ii : ii + 1] == next_line[ii : ii + 1]
+                and len(current_line[ii : ii + 1]) > 0
+                and len(next_line[ii : ii + 1]) > 0
             ):
                 increment += 1
             elif increment > 0:
@@ -43,7 +34,7 @@ def tree_output(column_names: list) -> str:
 
 def generate_report(
     tables_names: list, column_names: list, number_queries: int, report_name: str
-):
+) -> None:
     joined_tables = " | ".join([table for table in tables_names if table != ""])
     tree = tree_output(column_names=column_names)
     with open(f"{report_name}.txt", "w") as f:

@@ -2,7 +2,7 @@ from typing import Union
 
 
 class RecursiveSearch:
-    def __init__(self):
+    def __init__(self) -> None:
         self.stock = {}
         self.index = 0
         self.columns = {}
@@ -33,19 +33,19 @@ class RecursiveSearch:
         for value in columns.values():
             split = value.split(".", 1)
             potential_alias = split[0]
-            if potential_alias in alias.keys():
+            if potential_alias in alias:
                 full_names_columns.append(f"{alias[potential_alias]}.{split[1]}")
             else:
                 full_names_columns.append(potential_alias)
         return full_names_columns
 
-    def recursive_depth_list(self, file_to_parse: list):
+    def recursive_depth_list(self, file_to_parse: list) -> None:
         for element in file_to_parse:
             self.index += 1
             if isinstance(element, dict):
                 self.recursive_depth(file_to_parse=element)
 
-    def recursive_depth(self, file_to_parse: dict):
+    def recursive_depth(self, file_to_parse: dict) -> None:
         for key, values in file_to_parse.items():
             self.index += 1
             if key == "from_expression_element":
