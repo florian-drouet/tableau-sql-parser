@@ -38,4 +38,4 @@ jobs:
     # Run lint
     - name: Lint with ruff
       run: |
-        uv run ruff check .
+        uvx ruff check .
