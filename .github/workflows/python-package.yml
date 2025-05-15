@@ -24,9 +24,19 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    
+    # Install uv
+    - name: Install uv
       run: |
-        uv sync
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+    
+    # Run tests
     - name: Test with pytest
       run: |
         uv run pytest -sxv
+
+    # Run lint
+    - name: Lint with ruff
+      run: |
+        uv run ruff check .
