@@ -3,7 +3,7 @@ name = "tableau-sql-parser"
 version = "0.2.2"
 description = "A tool for parsing Tableau custom SQL queries and extracting useful information"
 authors = [
-    { name = "Florian Drouet", email = "florian.drouet@gmail.com" }
+    { name = "Florian Drouet", email = "florian.drouet78@gmail.com" }
 ]
 license = { file = "LICENSE" }
 readme = "README.md"
