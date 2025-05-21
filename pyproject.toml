@@ -17,7 +17,7 @@ dependencies = [
 sqlparse = "tableau_sql_parser.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/floriandrouet/tableau-sql-parser"
+Homepage = "https://github.com/florian-drouet/tableau-sql-parser"
 
 [tool.uv]
 package = true
