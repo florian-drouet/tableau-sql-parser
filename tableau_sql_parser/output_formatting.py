@@ -1,5 +1,5 @@
 class OutputFormatting:
-    def __init__(self, report_name: str, alias: dict, columns: dict):
+    def __init__(self, report_name: str, alias: dict, columns: dict) -> None:
         self.report_name = report_name
         self.tables_names = []
         self.column_names = []
@@ -14,13 +14,13 @@ class OutputFormatting:
         for value in columns.values():
             split = value.split(".", 1)
             potential_alias = split[0]
-            if potential_alias in alias.keys():
+            if potential_alias in alias:
                 column_names_full.append(f"{alias[potential_alias]}.{split[1]}")
             else:
                 column_names_full.append(potential_alias)
         return column_names_full
 
-    def get_column_names_all(self):
+    def get_column_names_all(self) -> None:
         temp_column_names = []
         for i in range(0, len(self.alias)):
             temp_column_names.extend(
@@ -28,7 +28,7 @@ class OutputFormatting:
             )
         self.column_names = sorted([*set(temp_column_names)])
 
-    def get_tables_names(self):
+    def get_tables_names(self) -> None:
         temp_table_names = []
         for column in self.column_names:
             temp_table_names.append(".".join(column[::-1].split(".", 1)[1:])[::-1])

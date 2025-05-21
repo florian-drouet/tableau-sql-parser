@@ -14,7 +14,7 @@ class TableauWorkbook:
     Defines a workbook object from a filename.
     """
 
-    def __init__(self, filename, report_name):
+    def __init__(self, filename: str, report_name: str) -> None:
         self.filename = os.path.normpath(filename)
         self.report_name = report_name
         self.xml = self._get_xml()
@@ -26,7 +26,7 @@ class TableauWorkbook:
             self.alias,
         ) = self._recursive_search_sql()
 
-    def _get_xml(self):
+    def _get_xml(self) -> lxml.etree._Element:
         """
         Returns the xml of the given .twb or .twbx file.
         """
@@ -51,24 +51,19 @@ class TableauWorkbook:
 
             return xml
 
-    def _get_custom_sql(self):
+    def _get_custom_sql(self) -> list:
         """
         Returns a list of all unique custom sql queries in the workbook.
         """
 
         search = self.xml.xpath("//relation[@type='text']")
         queries = list(
-            set(
-                [
-                    sql.text.lower().replace("<<", "<").replace(">>", ">")
-                    for sql in search
-                ]
-            )
+            {sql.text.lower().replace("<<", "<").replace(">>", ">") for sql in search}
         )
 
         return queries
 
-    def _parse_custom_sql(self):
+    def _parse_custom_sql(self) -> list:
         """
         Returns a list of all unique custom sql queries
         in the workbook parsed by sqlfluff parser
@@ -81,7 +76,7 @@ class TableauWorkbook:
                 logging.error(e)
         return parsed_queries
 
-    def _recursive_search_sql(self):
+    def _recursive_search_sql(self) -> tuple[list, list, list]:
         """
         Returns a dict where keys are index and values are a list of column/table names
         """
@@ -96,7 +91,7 @@ class TableauWorkbook:
             alias.append(search.alias)
         return recursive_searched_queries, columns, alias
 
-    def _generate_output(self):
+    def _generate_output(self) -> tuple[list, list, int]:
         number_queries_analyzed = len(self.recursive_searched_queries)
         report = OutputFormatting(
             report_name=self.report_name,

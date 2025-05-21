@@ -12,7 +12,7 @@ from tableau_sql_parser.recursive_search import RecursiveSearch
         (["  foo", "bar  ", "1"], "foo bar 1"),
     ],
 )
-def test__flatten_values(test_input, expected):
+def test__flatten_values(test_input: list, expected: str) -> None:
     assert RecursiveSearch._flatten_values(test_input) == expected
 
 
@@ -24,7 +24,7 @@ def test__flatten_values(test_input, expected):
         ({"foo": "bar"}, "bar"),
     ],
 )
-def test__extract_elements(test_input, expected):
+def test__extract_elements(test_input: list, expected: str) -> None:
     assert RecursiveSearch._extract_elements(test_input) == expected
 
 
@@ -60,7 +60,7 @@ expected_output = {
 }
 
 
-def test__recursive_search():
+def test__recursive_search() -> None:
     search_sql = RecursiveSearch()
     search_sql.recursive_depth(file_to_parse=parsed_query)
     assert search_sql.stock == expected_output

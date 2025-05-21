@@ -26,7 +26,7 @@ from tableau_sql_parser.utils import generate_report
     is_flag=True,
     required=False,
 )
-def main(file_to_parse, report_name, is_output):
+def main(file_to_parse: str, report_name: str, is_output: bool) -> None:
     click.echo(f"File name is: {file_to_parse} and report name is: {report_name}")
     my_workbook = TableauWorkbook(filename=file_to_parse, report_name=report_name)
     tables_names, column_names, number_queries = my_workbook._generate_output()
