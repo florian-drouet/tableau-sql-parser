@@ -1,6 +1,6 @@
 [project]
 name = "tableau-sql-parser"
-version = "0.1.2"
+version = "0.2.1"
 description = "A tool for parsing Tableau custom SQL queries and extracting useful information"
 authors = [
     { name = "Florian Drouet", email = "florian.drouet@gmail.com" }
@@ -12,6 +12,12 @@ dependencies = [
     "lxml>=5.4.0",
     "sqlfluff>=3.4.0",
 ]
+
+[project.scripts]
+sqlparse = "tableau_sql_parser.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/floriandrouet/tableau-sql-parser"
 
 [tool.uv]
 package = true
