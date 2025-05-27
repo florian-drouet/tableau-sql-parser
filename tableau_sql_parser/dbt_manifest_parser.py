@@ -61,7 +61,7 @@ class DbtManifestParser:
         """Return distinct list of tables."""
         return sorted({obj["table"] for obj in self.dbt_objects})
 
-    def get_all_table_names(self) -> set[str]:
+    def get_all_table_names(self) -> list[str]:
         """Return all table names from the manifest."""
         schema_table_strings = self.get_schema_table_strings()
         tables = self.get_tables()

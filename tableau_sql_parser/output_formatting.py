@@ -28,7 +28,7 @@ class OutputFormatting:
         return column_names_full
 
     @staticmethod
-    def filter_dbt_manifest(column_names: list, dbt_columns: list) -> None:
+    def filter_dbt_manifest(column_names: list, dbt_columns: list) -> list[str]:
         """
         This function filters the dbt manifest to get the relevant information
         for the report.
