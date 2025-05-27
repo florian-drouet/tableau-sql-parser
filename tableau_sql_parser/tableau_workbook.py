@@ -5,6 +5,7 @@ import zipfile
 import lxml.etree
 import sqlfluff
 
+from tableau_sql_parser.dbt_manifest_parser import DbtManifestParser
 from tableau_sql_parser.output_formatting import OutputFormatting
 from tableau_sql_parser.recursive_search import RecursiveSearch
 
@@ -14,7 +15,12 @@ class TableauWorkbook:
     Defines a workbook object from a filename.
     """
 
-    def __init__(self, filename: str, report_name: str) -> None:
+    def __init__(
+        self,
+        filename: str,
+        report_name: str,
+        manifest_path: str = None
+    ) -> None:
         self.filename = os.path.normpath(filename)
         self.report_name = report_name
         self.xml = self._get_xml()
@@ -25,6 +31,12 @@ class TableauWorkbook:
             self.columns,
             self.alias,
         ) = self._recursive_search_sql()
+        if manifest_path:
+            self.dbt_table_names = DbtManifestParser(
+                manifest_path=manifest_path
+            ).get_all_table_names()
+        else:
+            self.dbt_table_names = None
 
     def _get_xml(self) -> lxml.etree._Element:
         """
@@ -97,5 +109,6 @@ class TableauWorkbook:
             report_name=self.report_name,
             alias=self.alias,
             columns=self.columns,
+            dbt_table_names=self.dbt_table_names,
         )
         return report.tables_names, report.column_names, number_queries_analyzed

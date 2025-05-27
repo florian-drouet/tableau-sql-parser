@@ -1,4 +1,10 @@
+import os
+import shutil
+
 import click
+from platformdirs import user_cache_dir
+
+from tableau_sql_parser import APP_NAME, CACHE_FILENAME
 
 
 def tree_output(column_names: list) -> str:
@@ -48,3 +54,47 @@ def generate_report(
         f.write("\nColumns are:\n")
         f.write(tree)
         f.write("---\n")
+
+
+def resolve_manifest_path() -> str:
+    """Manage cached manifest.json: use, replace, or delete."""
+    cache_dir = user_cache_dir(APP_NAME)
+    os.makedirs(cache_dir, exist_ok=True)
+    cached_manifest_path = os.path.join(cache_dir, CACHE_FILENAME)
+
+    if os.path.exists(cached_manifest_path):
+        click.echo("📦 Cached manifest.json file detected.")
+        action = click.prompt(
+            "Do you want to use the cached file? (use / replace / delete)",
+            type=click.Choice(["use", "replace", "delete"]),
+            default="use"
+        )
+
+        if action == "use":
+            click.echo(f"Using cached manifest: {cached_manifest_path}")
+            return cached_manifest_path
+
+        elif action == "replace":
+            manifest_path = click.prompt(
+                "Enter the path to the new manifest file",
+                type=click.Path(exists=True)
+            )
+            shutil.copy(manifest_path, cached_manifest_path)
+            click.echo(f"✅ Replaced cached manifest with: {manifest_path}")
+            return cached_manifest_path
+
+        elif action == "delete":
+            os.remove(cached_manifest_path)
+            click.echo("🗑️ Deleted cached manifest file.")
+            return None
+    else:
+        if click.confirm("Do you want to add a manifest file?", default=False):
+            manifest_path = click.prompt(
+                "Enter the path to the manifest file",
+                type=click.Path(exists=True)
+            )
+            shutil.copy(manifest_path, cached_manifest_path)
+            click.echo(f"✅ Cached manifest: {cached_manifest_path}")
+            return cached_manifest_path
+
+    return None

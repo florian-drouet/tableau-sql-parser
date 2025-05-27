@@ -357,7 +357,7 @@ wheels = [
 
 [[package]]
 name = "tableau-sql-parser"
-version = "0.1.2"
+version = "0.3.1"
 source = { editable = "." }
 dependencies = [
     { name = "lxml" },
