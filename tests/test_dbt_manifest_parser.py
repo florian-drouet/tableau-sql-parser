@@ -1,11 +1,13 @@
 import json
-import pytest
 from pathlib import Path
+
+import pytest
+
 from tableau_sql_parser.dbt_manifest_parser import DbtManifestParser
 
 
 @pytest.fixture
-def manifest_file(tmp_path) -> Path:
+def manifest_file(tmp_path: str) -> Path:
     """Creates a mock manifest.json file for testing."""
     manifest_data = {
         "nodes": {
@@ -32,14 +34,14 @@ def manifest_file(tmp_path) -> Path:
     return path
 
 
-def test_load_manifest(manifest_file):
+def test_load_manifest(manifest_file: Path) -> None:
     parser = DbtManifestParser(manifest_file)
     assert isinstance(parser.manifest, dict)
     assert "nodes" in parser.manifest
     assert "sources" in parser.manifest
 
 
-def test_extract_dbt_objects(manifest_file):
+def test_extract_dbt_objects(manifest_file: Path) -> None:
     parser = DbtManifestParser(manifest_file)
     expected = [
         {"type": "model", "schema": "analytics", "table": "model_a"},
@@ -49,7 +51,7 @@ def test_extract_dbt_objects(manifest_file):
     assert parser.dbt_objects == expected
 
 
-def test_get_schema_table_strings(manifest_file):
+def test_get_schema_table_strings(manifest_file: Path) -> None:
     parser = DbtManifestParser(manifest_file)
     expected = sorted([
         "analytics.model_a",
@@ -59,13 +61,13 @@ def test_get_schema_table_strings(manifest_file):
     assert parser.get_schema_table_strings() == expected
 
 
-def test_get_tables(manifest_file):
+def test_get_tables(manifest_file: Path) -> None:
     parser = DbtManifestParser(manifest_file)
     expected = sorted(["model_a", "seed_a", "source_a"])
     assert parser.get_tables() == expected
 
 
-def test_get_all_table_names(manifest_file):
+def test_get_all_table_names(manifest_file: Path) -> None:
     parser = DbtManifestParser(manifest_file)
     expected = sorted([
         "analytics.model_a",
@@ -78,7 +80,7 @@ def test_get_all_table_names(manifest_file):
     assert sorted(parser.get_all_table_names()) == expected
 
 
-def test_missing_file_raises(tmp_path):
+def test_missing_file_raises(tmp_path: str) -> None:
     non_existent_path = tmp_path / "missing_manifest.json"
     with pytest.raises(FileNotFoundError):
         DbtManifestParser(non_existent_path)
